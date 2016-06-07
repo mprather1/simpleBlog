@@ -11,8 +11,22 @@ app.configure(function(){
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
+app.get("/posts", function(req, res){
+  posts.find(function(err, results){
+    res.json(results);
+  });
+});
+
+app.post("/posts", function(req, res){
+  posts.insert(req.body, function(result){
+    res.json(result);
+  });
+});
+
 app.get('/*', function(req, res){
-  res.render("index.ejs");
+  posts.find(function(err, results){
+    res.render("index.ejs");
+  });
 });
 
 
