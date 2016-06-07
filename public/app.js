@@ -16,3 +16,17 @@ var PostListView = Backbone.View.extend({
     return this;
   }
 });
+
+var PostsListView = Backbone.View.extend({
+  template: _.template("<h1>My Blog</h1><ul></ul>"),
+  render: function(){
+    this.el.innerHTML = this.template();
+    var ul = this.$el.find("ul");
+    this.collection.forEach(function(post){
+      ul.append(new PostListView({
+        model: post
+      }).render().el);
+    })
+    return this;
+  }
+});
