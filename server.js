@@ -18,7 +18,7 @@ app.get("/posts", function(req, res){
 });
 
 app.post("/posts", function(req, res){
-  posts.insert(req.body, function(result){
+  posts.insert(req.body, function(err, result){
     res.json(result);
   });
 });

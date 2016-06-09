@@ -90,7 +90,8 @@ var PostRouter = Backbone.Router.extend({
   },
   routes: {
     '': 'index',
-    'posts/:id': 'singlePost'
+    'posts/:id': 'singlePost',
+    'posts/new': 'newPost'
   },
   index: function(){
     var pv = new PostsListView({collection: this.posts})
