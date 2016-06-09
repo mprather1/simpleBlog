@@ -2,11 +2,25 @@ _.templateSettings = {
   interpolate: /\{\{(.+?)\}\}/g
 };
 
-var Post = Backbone.Model.extend({});
+var Post = Backbone.Model.extend({
+  initialize: function(){
+    this.comments = new Comments([], {post: this});
+  }
+});
 var Posts = Backbone.Collection.extend({
   model: Post,
   url: "/posts"
 });
+
+var Comment = Backbone.Model.extend({});
+var Comments = Backbone.Collection.extend({
+  initialize: function(models, options){
+    this.post = options.post
+  },
+  url: function(){
+    return this.post.url() + "/comments";
+  }
+})
 
 var PostView = Backbone.View.extend({
   template: _.template($("#postView").html()),
@@ -80,6 +94,16 @@ var PostFormView = Backbone.View.extend({
     this.posts.create(postAttrs);
     postRouter.navigate("/", {trigger: true});
     return false;
+  }
+});
+
+var CommentView = Backbone.View.extend({
+  template: _.template($("#commentView").html()),
+  render function(){
+    var model = this.model.toJSON();
+    model.date = new Date(Date.parse(model.date)).toDateString();
+    this.el.innerHTML = this.template(model);
+    return this;
   }
 });
 
