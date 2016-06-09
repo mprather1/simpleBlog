@@ -5,12 +5,23 @@
   </head>
   <body>
     <div id="main"></div>
+
     <script type="text/template" id="postView">
       <a href='/'>All Posts</a>
       <h1>{{title}}</h1>
       <p>{{pubDate}}</p>
       {{content}}
     </script>
+
+    <script type="text/template" id="postFormView">
+      <a href="/">All Post</a><br />
+      <input type="text" id="postTitle" placeholder="post title" />
+      <br />
+      <textarea id="postText"></textarea>
+      <br />
+      <button id="submitPost"> Post </button>
+    </script>
+
     <script src="/jquery.js"></script>
     <script src="/underscore.js"></script>
     <script src="/backbone.js"></script>

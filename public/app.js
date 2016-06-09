@@ -58,6 +58,31 @@ var PostsListView = Backbone.View.extend({
   }
 });
 
+var PostFormView = Backbone.View.extend({
+  tagName: 'form',
+  template: _.template($("#postFormView").html()),
+  initialize: function(options){
+    this.posts = options.posts
+  },
+  events: {
+    'click button': 'createPost'
+  },
+  render: function(){
+    this.el.innerHTML = this.template();
+    return this;
+  },
+  createPost: function(e){
+    var postAttrs = {
+      content: $("#postText").val(),
+      title: $("#postTitle").val(),
+      pubDate: new Date()
+    };
+    this.posts.create(postAttrs);
+    postRouter.navigate("/", {trigger: true});
+    return false;
+  }
+});
+
 var PostRouter = Backbone.Router.extend({
   initialize: function(options){
     this.posts = options.posts;
@@ -75,5 +100,9 @@ var PostRouter = Backbone.Router.extend({
     var post = this.posts.get(id);
     var pv = new PostView({model: post});
     this.main.html(pv.render().el);
+  },
+  newPost: function(){
+    var pfv = new PostFormView({ posts: this.posts });
+    this.main.html(pfv.render().el);
   }
 });
