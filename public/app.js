@@ -2,16 +2,6 @@ _.templateSettings = {
   interpolate: /\{\{(.+?)\}\}/g
 };
 
-var Post = Backbone.Model.extend({
-  initialize: function(){
-    this.comments = new Comments([], {post: this});
-  }
-});
-var Posts = Backbone.Collection.extend({
-  model: Post,
-  url: "/posts"
-});
-
 var Comment = Backbone.Model.extend({});
 var Comments = Backbone.Collection.extend({
   initialize: function(models, options){
@@ -20,7 +10,7 @@ var Comments = Backbone.Collection.extend({
   url: function(){
     return this.post.url() + "/comments";
   }
-})
+});
 
 var PostView = Backbone.View.extend({
   template: _.template($("#postView").html()),
@@ -99,7 +89,7 @@ var PostFormView = Backbone.View.extend({
 
 var CommentView = Backbone.View.extend({
   template: _.template($("#commentView").html()),
-  render function(){
+  render: function(){
     var model = this.model.toJSON();
     model.date = new Date(Date.parse(model.date)).toDateString();
     this.el.innerHTML = this.template(model);
@@ -132,7 +122,27 @@ var CommentFormView = Backbone.View.extend({
     this.post.comments.create(commentAttrs);
     this.el.reset();
   }
-})
+});
+
+var CommentsView = Backbone.View.extend({
+  initialize: function(options){
+    this.post = options.post;
+    this.post.comments.on('add', this.addComment, this);
+  },
+  addComment: function(comment){
+    this.$el.append(new CommentView({
+      model: comment
+    }).render().el);
+  },
+  render: function(){
+    this.$el.append("<h2> Comments </h2>");
+    this.$el.append(new CommentFormView({
+      post: this.post
+    }).render().el);
+    this.post.comments.fetch();
+    return this;
+  }
+});
 
 var PostRouter = Backbone.Router.extend({
   initialize: function(options){
