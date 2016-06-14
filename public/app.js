@@ -12,6 +12,16 @@ var Comments = Backbone.Collection.extend({
   }
 });
 
+var Post = Backbone.Model.extend({
+  initialize: function(){
+    this.comments = new Comments([], {post: this});
+  }
+});
+var Posts = Backbone.Collection.extend({
+  model: Post,
+  url: "/posts"
+});
+
 var PostView = Backbone.View.extend({
   template: _.template($("#postView").html()),
   events: {
