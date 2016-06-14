@@ -24,12 +24,9 @@ app.post("/posts", function(req, res){
 });
 
 app.get("/posts/:id/comments", function(req, res){
-  comments.find(
-    { postId: parsInt(req.params.id, 10) },
-    function(err, results){
+  comments.find({ postId: parseInt(req.params.id, 10)}, function(err, results){
       res.json(results);
-    }
-  )
+  })
 });
 
 app.post("/posts/:id/comments", function(req, res){
