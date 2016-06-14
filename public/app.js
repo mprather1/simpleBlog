@@ -173,6 +173,8 @@ var PostRouter = Backbone.Router.extend({
     var post = this.posts.get(id);
     var pv = new PostView({model: post});
     this.main.html(pv.render().el);
+    var cv = new CommentsView({ post: post});
+    this.main.append(cv.render().el);
   },
   newPost: function(){
     var pfv = new PostFormView({ posts: this.posts });
